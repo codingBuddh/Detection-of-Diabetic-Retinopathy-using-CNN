@@ -1,0 +1,59 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diabetic Retinopathy Detection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="header">
+        
+        <h1>Diabetic Retinopathy Detection</h1>
+    </div>
+    <div class="container">
+        <form action="/predict" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" accept=".jpg, .jpeg, .png" id="imageInput" onchange="previewImage()">
+            <div id="imagePreview"></div>
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction is defined %}
+            <h2>Prediction: {{ prediction }}</h2>
+        {% endif %}
+    </div>
+
+    <div class="footer">
+        <!-- <p class="small-text">7th Semester Project</p> -->
+        <p class="small-text">Made with love by Coding Buddh</p>
+        <p class="small-text">AMAN</p>
+    </div>
+
+    <script>
+        function previewImage() {
+            var input = document.getElementById('imageInput');
+            var preview = document.getElementById('imagePreview');
+
+            while (preview.firstChild) {
+                preview.removeChild(preview.firstChild);
+            }
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.maxWidth = '100%';
+                    img.style.maxHeight = '200px';
+                    preview.appendChild(img);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+</html>
